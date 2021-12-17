@@ -11,6 +11,55 @@ crystals = [
         "points": 130,
         "scale": 15
     },
+    {
+        "title": "Glazkov crystal 2",
+        "filepath": "glazkov2.obj",
+        "size": 200,
+        "points": 130,
+        "scale": 35
+    },
+    {
+        "title": "Saveliev crystal 1",
+        "filepath": "saveliev1.obj",
+        "size": 200,
+        "points": 130,
+        "scale": 65
+    },
+    {
+        "title": "Saveliev crystal 2",
+        "filepath": "saveliev2.obj",
+        "size": 200,
+        "points": 130,
+        "scale": 65
+    },
+    {
+        "title": "Tolochny crystal 1",
+        "filepath": "tolochny1.obj",
+        "size": 200,
+        "points": 130,
+        "scale": 65
+    },
+    {
+        "title": "Tolochny crystal 2",
+        "filepath": "tolochny2.obj",
+        "size": 200,
+        "points": 130,
+        "scale": 65
+    },
+    {
+        "title": "Nikiforov crystal 1",
+        "filepath": "nikiforov1.obj",
+        "size": 200,
+        "points": 130,
+        "scale": 65
+    },
+    {
+        "title": "Nikiforov crystal 2",
+        "filepath": "nikiforov2.obj",
+        "size": 200,
+        "points": 130,
+        "scale": 65
+    },
 ]
 
 keys = {
