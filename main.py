@@ -2,70 +2,77 @@ from crystal import Crystal
 import cv2
 import numpy as np
 from PIL import Image
-import sys
 
-crystals = {
-    "glazkov1": { "filepath": "glazkov1.obj", "size": 200, "points": 130, "scale": 16 }
-}
+crystals = [
+    {
+        "title": "Glazkov crystal 1",
+        "filepath": "glazkov1.obj",
+        "size": 200,
+        "points": 130,
+        "scale": 15
+    },
+]
 
 keys = {
     "left": 65361,
     "top": 65362,
     "right": 65363,
     "bottom": 65364,
-    "enter": 13,
     "z": 122,
-    "x": 120
+    "x": 120,
+    "enter": 13,
+    "space": 32,
 }
 
-def usage():
-    print('Allowed crystals:')
-    for crystal in crystals.keys():
-        print(f'  - {crystal}')
-    exit(1)
+def loadcrystal(index):
+    index = index % len(crystals)
+
+    crystal = Crystal(crystals[index]["filepath"])
+    crystal.scale(crystals[index]["scale"])
+
+    title = crystals[index]["title"]
+    size = crystals[index]["size"]
+    points = crystals[index]["points"]
+
+    return crystal, title, size, points
 
 def main():
-    if len(sys.argv) < 2:
-        print('Enter crystal name in arguments!')
-        usage()
-
-    try:
-        params = crystals[sys.argv[1]]
-
-        crystal = Crystal(params["filepath"])
-        crystal.scale(params["scale"])
-        size = params["size"]
-        points = params["points"]
-    except:
-        print(f'Crystal with name "{sys.argv[1]}" not exist!')
-        usage()
-
     print("Rotate X: UP and DOWN keys")
     print("Rotate Y: LEFT and RIGHT keys")
-    print("Rotate Z: Z and X keys\n")
+    print("Rotate Z: Z and X keys")
+    print("Switch: SPACE key\n")
     print("For exit press ENTER...")
+
+    current = 0
+    crystal, title, size, points = loadcrystal(current)
 
     while True:
         image = Image.new("RGB", (size, size))
 
         # render crystal as pixels array
         imagedata = crystal.render(crystal.vertexes,
-                                crystal.normals,
-                                crystal.faces,
-                                size=size,
-                                points=points)
+                                   crystal.normals,
+                                   crystal.faces,
+                                   size=size,
+                                   points=points)
 
         # convert to pillow image
         for pixelx, pixely, color in imagedata:
             image.putpixel((pixelx, pixely), (color, color, color))
 
         # show image frame
-        cv2.imshow(params["filepath"], np.asarray(image))
+        cv2.imshow(title, np.asarray(image))
 
-        key = cv2.waitKeyEx()
+        key = cv2.waitKeyEx(1000)
 
-        if (keys["enter"] == key):
+        if keys["enter"] == key:
             break
+
+        if keys["space"] == key:
+            cv2.destroyWindow(title)
+
+            current += 1
+            crystal, title, size, points = loadcrystal(current)
 
         crystal.rotateX(-5 if keys["bottom"] == key else 5 if keys["top"] == key else 0)
         crystal.rotateY(-5 if keys["right"] == key else 5 if keys["left"] == key else 0)
