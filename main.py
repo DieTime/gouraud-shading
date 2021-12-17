@@ -5,7 +5,17 @@ from PIL import Image
 import sys
 
 crystals = {
-    "glazkov1": { "filepath": "glazkov1.obj", "size": 200, "points": 120, "scale": 15 }
+    "glazkov1": { "filepath": "glazkov1.obj", "size": 200, "points": 130, "scale": 16 }
+}
+
+keys = {
+    "left": 65361,
+    "top": 65362,
+    "right": 65363,
+    "bottom": 65364,
+    "enter": 13,
+    "z": 122,
+    "x": 120
 }
 
 def usage():
@@ -30,6 +40,10 @@ def main():
         print(f'Crystal with name "{sys.argv[1]}" not exist!')
         usage()
 
+    print("Rotate X: UP and DOWN keys")
+    print("Rotate Y: LEFT and RIGHT keys")
+    print("Rotate Z: Z and X keys\n")
+    print("For exit press ENTER...")
 
     while True:
         image = Image.new("RGB", (size, size))
@@ -47,12 +61,15 @@ def main():
 
         # show image frame
         cv2.imshow(params["filepath"], np.asarray(image))
-        cv2.waitKey(1)
 
-        # update crystal
-        crystal.rotateX(2)
-        crystal.rotateY(5)
-        crystal.rotateZ(5)
+        key = cv2.waitKeyEx()
+
+        if (keys["enter"] == key):
+            break
+
+        crystal.rotateX(-5 if keys["bottom"] == key else 5 if keys["top"] == key else 0)
+        crystal.rotateY(-5 if keys["right"] == key else 5 if keys["left"] == key else 0)
+        crystal.rotateZ(-5 if keys["x"] == key else 5 if keys["z"] == key else 0)
 
 if __name__ == "__main__":
     main()
